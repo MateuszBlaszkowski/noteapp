@@ -1,0 +1,75 @@
+﻿<Window x:Class="noteapp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:noteapp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"  MinHeight="450" MinWidth="570">
+
+    <Grid Background="#3E3E3E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions >
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" Content="Twoja tablica" Foreground="White" FontSize="32" VerticalAlignment="Center" Margin="20,0,0,0"/>
+        <Button Grid.Column="1" Grid.Row="0" Width="120" Height="40" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="White" Content="Dodaj notatkę" Click="Button_Click">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#13A922"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" >
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF19C72A"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Background="#474747" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Name="a">
+        <ItemsControl Name="itemsc">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical"  Height="150" Width="150" HorizontalAlignment="Left" Margin="10" MouseDown="StackPanel_MouseDown" Tag="{Binding IDD}">
+                        <Label Content="{Binding Title}"/>
+                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Padding="5"/>
+                            <StackPanel.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#D2C335" Offset="0.0" />
+                                    <GradientStop Color="#FFEF5F" Offset="0.25" />
+                                </LinearGradientBrush>
+                            </StackPanel.Background>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        </ScrollViewer>
+        <!--<WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#474747" x:Name="board">
+            <StackPanel Orientation="Vertical" Background="#E4D014" Height="100" Width="100" HorizontalAlignment="Left" Margin="10,10,0,0">
+                <Label Content="okokokook"/>
+                <TextBlock Text="aslhdashdk;lsajhlksdhfalksjdfhlkdsjfhlasdkjfh" TextWrapping="Wrap" Padding="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Background="#E4D014" Height="100" Width="100" HorizontalAlignment="Left" Margin="10,10,0,0">
+                <Label Content="okokokook"/>
+                <TextBlock Text="aslhdashdk;lsajhlksdhfalksjdfhlkdsjfhlasdkjfh" TextWrapping="Wrap" Padding="5"/>
+            </StackPanel>
+        </WrapPanel>-->
+    </Grid>
+</Window>
