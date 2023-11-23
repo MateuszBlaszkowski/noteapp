@@ -8,7 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
+    <PackageReference Include="MaterialIcons" Version="1.0.3" />
+	  <Content Include="Fonts\Jaldi-Regular.ttf">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Fonts\Jaldi-Bold.ttf">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
   </ItemGroup>
 
 </Project>

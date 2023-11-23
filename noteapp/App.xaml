@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:noteapp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <FontFamily x:Key="JaldiRegular">./Fonts/Jaldi-Regular.ttf#Jaldi Regular</FontFamily>
+        <FontFamily x:Key="JaldiBold">./Fonts/Jaldi-Bold.ttf#Jaldi Bold</FontFamily>
+        <Brush x:Key="PrimaryColor">#083358</Brush>
     </Application.Resources>
 </Application>

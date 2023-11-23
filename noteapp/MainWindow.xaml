@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:noteapp"
+        xmlns:local="clr-namespace:noteapp" xmlns:mi="clr-namespace:MaterialIcons;assembly=MaterialIcons"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"  MinHeight="450" MinWidth="570">
+        Title="MainWindow" Height="450" Width="800"  MinHeight="450" MinWidth="570" FontFamily="{StaticResource JaldiBold}" Background="{StaticResource PrimaryColor}">
 
-    <Grid Background="#3E3E3E">
+    <Grid  Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -16,8 +16,20 @@
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="Twoja tablica" Foreground="White" FontSize="32" VerticalAlignment="Center" Margin="20,0,0,0"/>
-        <Button Grid.Column="1" Grid.Row="0" Width="120" Height="40" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="White" Content="Dodaj notatkę" Click="Button_Click">
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Margin="20,0,0,0">
+
+            <mi:MaterialIcon Icon="ic_arrow_back" Height="28" VerticalAlignment="Center" Margin="0,5,5,0" Foreground="White" Visibility="Collapsed" Name="backBtn" MouseLeftButtonDown="backBtn_MouseLeftButtonDown" Background="#083358" />
+            
+            <Label Content="Twoja tablica" Foreground="White" FontSize="36" VerticalAlignment="Center"  Name="header"/>
+            
+        </StackPanel>
+        <Button Grid.Column="1" Grid.Row="0" Width="140" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="White"  Click="Button_Click">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Dodaj notatkę" Foreground="White" FontSize="16"/>
+                    <mi:MaterialIcon Icon="ic_add_box" Height="18"/>
+                </StackPanel>
+            </Button.Content>
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background" Value="#13A922"/>
@@ -38,38 +50,29 @@
                 </Style>
             </Button.Style>
         </Button>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Background="#474747" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Name="a">
-        <ItemsControl Name="itemsc">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical"  Height="150" Width="150" HorizontalAlignment="Left" Margin="10" MouseDown="StackPanel_MouseDown" Tag="{Binding IDD}">
-                        <Label Content="{Binding Title}"/>
-                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Padding="5"/>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Background="#315B80" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Name="a" Padding="20">
+            <ItemsControl Name="itemsc">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical"  Height="150" Width="150" HorizontalAlignment="Left" Margin="10" MouseDown="StackPanel_MouseDown" Tag="{Binding IDD}">
+                            <Label Content="{Binding Title}"/>
+                            <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Padding="5"/>
                             <StackPanel.Background>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <GradientStop Color="#D2C335" Offset="0.0" />
                                     <GradientStop Color="#FFEF5F" Offset="0.25" />
                                 </LinearGradientBrush>
                             </StackPanel.Background>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
-        <!--<WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Background="#474747" x:Name="board">
-            <StackPanel Orientation="Vertical" Background="#E4D014" Height="100" Width="100" HorizontalAlignment="Left" Margin="10,10,0,0">
-                <Label Content="okokokook"/>
-                <TextBlock Text="aslhdashdk;lsajhlksdhfalksjdfhlkdsjfhlasdkjfh" TextWrapping="Wrap" Padding="5"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" Background="#E4D014" Height="100" Width="100" HorizontalAlignment="Left" Margin="10,10,0,0">
-                <Label Content="okokokook"/>
-                <TextBlock Text="aslhdashdk;lsajhlksdhfalksjdfhlkdsjfhlasdkjfh" TextWrapping="Wrap" Padding="5"/>
-            </StackPanel>
-        </WrapPanel>-->
     </Grid>
 </Window>

@@ -13,5 +13,8 @@ namespace noteapp
         public string Title { get; set; }
         public string Content { get; set; }
         public string IDD { get; set; }
+        public string Color { get; set; }
+        public string titleFont { get; set; }
+        public string contentFont { get; set; }
     }
 }
