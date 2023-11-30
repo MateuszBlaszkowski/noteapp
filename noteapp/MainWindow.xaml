@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:noteapp" xmlns:mi="clr-namespace:MaterialIcons;assembly=MaterialIcons"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"  MinHeight="450" MinWidth="570" FontFamily="{StaticResource JaldiBold}" Background="{StaticResource PrimaryColor}">
+        Title="MainWindow" Height="450" Width="830"  MinHeight="450" MinWidth="570" FontFamily="{StaticResource JaldiBold}" Background="{StaticResource PrimaryColor}">
 
     <Grid  Margin="15">
         <Grid.ColumnDefinitions>
@@ -23,7 +23,7 @@
             <Label Content="Twoja tablica" Foreground="White" FontSize="36" VerticalAlignment="Center"  Name="header"/>
             
         </StackPanel>
-        <Button Grid.Column="1" Grid.Row="0" Width="140" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="White"  Click="Button_Click">
+        <Button Grid.Column="1" Grid.Row="0" Width="140" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="White"  Click="Button_Click" Name="addBtn">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Dodaj notatkę" Foreground="White" FontSize="16"/>
@@ -50,7 +50,35 @@
                 </Style>
             </Button.Style>
         </Button>
-
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Name="noteBtnsPanel" HorizontalAlignment="Right" Margin="0,0,20,0" Visibility="Collapsed">
+            <Button VerticalAlignment="Center" Height="50">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Usuń notatkę" Foreground="white" FontSize="16" Margin="10,0,0,0"/>
+                        <mi:MaterialIcon Icon="ic_delete" Height="18" Foreground="White" Margin="0,0,10,0"/>
+                    </StackPanel>
+                </Button.Content>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Red"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}" >
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#D91313"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Background="#315B80" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Name="a" Padding="20">
             <ItemsControl Name="itemsc">
                 <ItemsControl.ItemsPanel>

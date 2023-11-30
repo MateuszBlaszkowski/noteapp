@@ -30,7 +30,6 @@ namespace noteapp
         {
             InitializeComponent();
 
-           // string conString = @"mongodb+srv://matiblasz:YBG9SwsDn8KYrgHB@noteapp.8uhekot.mongodb.net/";
             string conString = "mongodb+srv://matiblasz:RqlU8WlrIX97XTQP@cluster0.vucqhwm.mongodb.net/?retryWrites=true&w=majority";
             var settings = MongoClientSettings.FromConnectionString(conString);
             settings.ServerApi = new ServerApi(ServerApiVersion.V1);
@@ -53,7 +52,6 @@ namespace noteapp
                 MessageBox.Show(ex.Message);
             }
 
-            
             itemsc.ItemsSource= notes;
 
             if(notes.Count == 0 ) 
@@ -73,6 +71,8 @@ namespace noteapp
             var document = collection.Find(filter).First();
             header.Content = "Notatka";
             backBtn.Visibility = Visibility.Visible;
+            addBtn.Visibility = Visibility.Collapsed;
+            noteBtnsPanel.Visibility = Visibility.Visible;
             a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF5F"));
 
             StackPanel stackPanel = new StackPanel()
@@ -135,10 +135,11 @@ namespace noteapp
         private void backBtn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             header.Content = "Tablica";
-            a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#474747"));
+            a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#315B80"));
             backBtn.Visibility = Visibility.Collapsed;
             a.Content = itemsc;
-
+            noteBtnsPanel.Visibility = Visibility.Collapsed; 
+            addBtn.Visibility = Visibility.Visible;
         }
     }
 }
