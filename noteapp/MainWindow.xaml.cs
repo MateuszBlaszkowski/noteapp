@@ -15,6 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using Amazon.SecurityToken.Model;
+using Microsoft.Win32;
+using System.IO;
 
 namespace noteapp
 {
@@ -25,6 +28,9 @@ namespace noteapp
     {
         ObservableCollection<Note> notes = new ObservableCollection<Note>();
         MongoClient client;
+        string curIDD;
+        TextBox textBlock;
+        TextBox title;
         // DB paswd: RqlU8WlrIX97XTQP
         public MainWindow()
         {
@@ -79,41 +85,60 @@ namespace noteapp
             {
                 Orientation = Orientation.Vertical
             };
-            TextBox title = new TextBox()
+            title = new TextBox()
             {
                 Text = document.Title,
                 FontSize = 26,
                 BorderThickness = new Thickness(0),
                 Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF5F"))
             };
-            FlowDocument flowDocument = new FlowDocument();
-            Paragraph paragraph = new Paragraph()
-            {
-                Margin= new Thickness(0),
-            };
-            Run run= new Run(document.Content); 
-            paragraph.Inlines.Add(run);
-            flowDocument.Blocks.Add(paragraph);
             
-            RichTextBox textBlock = new RichTextBox()
+            textBlock = new TextBox()
             {
-                 Document= flowDocument,
+                Text = document.Content,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
                 BorderThickness = new Thickness(0),
+                Height = a.ActualHeight - 100,
                 Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF5F")),
             };
             
             stackPanel.Children.Add(title);
             stackPanel.Children.Add(textBlock);
+            curIDD = document.IDD;
             a.Content = stackPanel;
+        }
+        private void back()
+        {
+            header.Content = "Tablica";
+            a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#315B80"));
+            backBtn.Visibility = Visibility.Collapsed;
+            a.Content = itemsc;
+            var collection = client.GetDatabase("db1").GetCollection<Note>("notes");
+            var filter = Builders<Note>.Filter.Eq(r => r.IDD, curIDD);
+            var update = Builders<Note>.Update.Set(r => r.Content, textBlock.Text);
+            collection.UpdateOne(filter, update);
+            update = Builders<Note>.Update.Set(r => r.Title, title.Text);
+            collection.UpdateOne(filter, update);
+            var document = collection.Find(filter).First();
+            notes.FirstOrDefault(r => r.IDD == curIDD).Content = textBlock.Text;
+            notes.FirstOrDefault(r => r.IDD == curIDD).Title = title.Text;
+            
+            CollectionViewSource.GetDefaultView(notes).Refresh();
+
+            noteBtnsPanel.Visibility = Visibility.Collapsed;
+            addBtn.Visibility = Visibility.Visible;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("ok"); 
-            notes.Add(new Note(){ Content="...", Title="Notatka", IDD = "id1", Color = "#FFEF5F" });
+            Guid guid = Guid.NewGuid();
+            string id = guid.ToString();
+
+            notes.Add(new Note(){ Content="...", Title="Notatka", IDD = id, Color = "#FFEF5F" });
             a.Content = itemsc;
             var collection = client.GetDatabase("db1").GetCollection<Note>("notes");
-            collection.InsertOne(new Note() { Content = "...", Title = "Notatka", IDD = "id1" });
+            collection.InsertOne(new Note() { Content = "...", Title = "Notatka", IDD = id });
         }
 
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
@@ -134,12 +159,30 @@ namespace noteapp
 
         private void backBtn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            header.Content = "Tablica";
-            a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#315B80"));
-            backBtn.Visibility = Visibility.Collapsed;
-            a.Content = itemsc;
-            noteBtnsPanel.Visibility = Visibility.Collapsed; 
-            addBtn.Visibility = Visibility.Visible;
+            back();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            back();
+            var collection = client.GetDatabase("db1").GetCollection<Note>("notes");
+            var filter = Builders<Note>.Filter.Eq(r => r.IDD, curIDD);
+            //var document = collection.Find(filter).First();
+            collection.DeleteOne(filter);
+            var removeItem = notes.Single( r => r.IDD == curIDD );
+            notes.Remove(removeItem);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text file (*.txt)|*.txt";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads\"+title.Text;
+            saveFileDialog.Title = title.Text;
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFileDialog.FileName, textBlock.Text);
+            }
         }
     }
 }
