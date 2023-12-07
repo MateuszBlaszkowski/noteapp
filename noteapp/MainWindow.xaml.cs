@@ -79,7 +79,7 @@ namespace noteapp
             backBtn.Visibility = Visibility.Visible;
             addBtn.Visibility = Visibility.Collapsed;
             noteBtnsPanel.Visibility = Visibility.Visible;
-            a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF5F"));
+            a.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(document.Color));
 
             StackPanel stackPanel = new StackPanel()
             {
@@ -90,7 +90,7 @@ namespace noteapp
                 Text = document.Title,
                 FontSize = 26,
                 BorderThickness = new Thickness(0),
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF5F"))
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(document.Color))
             };
             
             textBlock = new TextBox()
@@ -100,7 +100,7 @@ namespace noteapp
                 TextWrapping = TextWrapping.Wrap,
                 BorderThickness = new Thickness(0),
                 Height = a.ActualHeight - 100,
-                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEF5F")),
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(document.Color)),
             };
             
             stackPanel.Children.Add(title);
@@ -138,7 +138,7 @@ namespace noteapp
             notes.Add(new Note(){ Content="...", Title="Notatka", IDD = id, Color = "#FFEF5F" });
             a.Content = itemsc;
             var collection = client.GetDatabase("db1").GetCollection<Note>("notes");
-            collection.InsertOne(new Note() { Content = "...", Title = "Notatka", IDD = id });
+            collection.InsertOne(new Note() { Content = "...", Title = "Notatka", IDD = id, Color = "#FFEF5F" });
         }
 
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
@@ -182,6 +182,24 @@ namespace noteapp
             if (saveFileDialog.ShowDialog() == true)
             {
                 File.WriteAllText(saveFileDialog.FileName, textBlock.Text);
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+            var result = colorDialog.ShowDialog();
+            if(result == System.Windows.Forms.DialogResult.OK)
+            {
+                var color = "#" + (colorDialog.Color.ToArgb() & 0x00FFFFFF).ToString("X6");
+                var collection = client.GetDatabase("db1").GetCollection<Note>("notes");
+                var filter = Builders<Note>.Filter.Eq(r => r.IDD, curIDD);
+                var update = Builders<Note>.Update.Set(r => r.Color, color);
+                collection.UpdateOne(filter, update);
+                var document = collection.Find(filter).First();
+                notes.FirstOrDefault(r => r.IDD == curIDD).Color = color;
+                
+                back();
             }
         }
     }
